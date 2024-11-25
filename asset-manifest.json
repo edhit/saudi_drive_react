@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/saudi_drive_react/static/css/main.a32d0c85.css",
-    "main.js": "/saudi_drive_react/static/js/main.05c211b8.js",
+    "main.js": "/saudi_drive_react/static/js/main.8032f265.js",
     "static/js/453.62ec64bd.chunk.js": "/saudi_drive_react/static/js/453.62ec64bd.chunk.js",
     "index.html": "/saudi_drive_react/index.html",
     "main.a32d0c85.css.map": "/saudi_drive_react/static/css/main.a32d0c85.css.map",
-    "main.05c211b8.js.map": "/saudi_drive_react/static/js/main.05c211b8.js.map",
+    "main.8032f265.js.map": "/saudi_drive_react/static/js/main.8032f265.js.map",
     "453.62ec64bd.chunk.js.map": "/saudi_drive_react/static/js/453.62ec64bd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a32d0c85.css",
-    "static/js/main.05c211b8.js"
+    "static/js/main.8032f265.js"
   ]
 }
