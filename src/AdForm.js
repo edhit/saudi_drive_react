@@ -121,8 +121,7 @@ const TelegramStyleForm = () => {
   };
 
   const handleCopyToClipboard = () => {
-    // navigator.clipboard.writeText(generatedMessage);
-    navigator.clipboard.writeText("generatedMessage");
+    navigator.clipboard.writeText(generatedMessage);
     setShowNotification(true);
     setTimeout(() => {
       setShowNotification(false);
