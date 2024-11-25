@@ -5,7 +5,7 @@ const TelegramStyleForm = () => {
 
   const [greeting, setGreeting] = useState("");
   const [formData, setFormData] = useState({
-    role: "", // Водитель, Пассажир, Посылка
+    role: "Нужен водитель",
     date: "",
     time: "",
     from: "",
@@ -26,7 +26,7 @@ const TelegramStyleForm = () => {
   const [paddingBottom, setPaddingBottom] = useState(0);
 
   const cities = ["Медина", "Мекка", "Джидда", "Эр-Рияд"];
-  const roles = ["Нужен водитель", "Возьму пассажира(ов)", "Возьму посылку(и)"];
+  const roles = ["Нужен водитель", "Возьму пассажира(ов)", "Отправлю посылку(и)", "Возьму посылку(и)"];
 
   useEffect(() => {
     // Очистка стилей при размонтировании компонента
@@ -89,8 +89,10 @@ const TelegramStyleForm = () => {
           ? "Количество пассажиров"
           : formData.role === "Возьму пассажира(ов)"
           ? "Количество мест"
-          : "Количество кг."
-        messageParts.push(`🔢 ${text}: ${formData.seats}`);
+          : "Вес"
+
+        let kg = (formData.role !== "Нужен водитель" && formData.role !== "Возьму пассажира(ов)") ? "кг" : ""
+        messageParts.push(`🔢 ${text}: ${formData.seats} ${kg}`);
       }
     
       if (formData.comment) {
@@ -220,6 +222,7 @@ const TelegramStyleForm = () => {
               type="date"
               name="date"
               value={formData.date}
+              min={new Date().toJSON().slice(0, 10)}
               onChange={handleInputChange}
               className="w-full p-2 border rounded-lg"
             />
@@ -328,7 +331,7 @@ const TelegramStyleForm = () => {
               ? "Количество пассажиров"
               : formData.role === "Возьму пассажира(ов)"
               ? "Количество мест"
-              : "Количество кг."}
+              : "Вес (кг.)"}
             </label>
             <input
               type="number"
