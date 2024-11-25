@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PlusCircleIcon, GlobeAltIcon } from "@heroicons/react/24/outline"; // Импорт иконок
+import { PlusCircleIcon, UserGroupIcon } from "@heroicons/react/24/outline"; // Импорт иконок
 import AdForm from "./AdForm";
 
 const App = () => {
@@ -10,7 +10,7 @@ const App = () => {
     setActiveTab(tab);
     if (tab === "external" && !iframeComponent) {
       // Загружаем iframe только один раз
-      setIframeComponent(<IframeComponent url="https://gist.githubusercontent.com/edhit/670815bb6a03a6bc5548fa1edcad36d1/raw/d46cfd9c3383502ded24501875ac37e21bd298cc/Trst.json" />);
+      setIframeComponent(<IframeComponent url="https://edhit.github.io/saudi_projects_react/" />);
     }
   };
 
@@ -31,8 +31,8 @@ const App = () => {
           onClick={() => handleTabChange("home")}
         />
         <MenuButton
-          label="Ссылка"
-          Icon={GlobeAltIcon}
+          label="Группы"
+          Icon={UserGroupIcon}
           active={activeTab === "external"}
           onClick={() => handleTabChange("external")}
         />
@@ -62,7 +62,7 @@ const IframeComponent = ({ url }) => {
     <iframe
       src={url}
       title="Внешний сайт"
-      className="w-full h-full"
+      className="w-full h-screen"
       frameBorder="0"
     ></iframe>
   );
