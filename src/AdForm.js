@@ -26,7 +26,7 @@ const TelegramStyleForm = () => {
   const [paddingBottom, setPaddingBottom] = useState(0);
 
   const cities = ["Медина", "Мекка", "Джидда", "Эр-Рияд"];
-  const roles = ["Нужен водитель", "Возьму пассажира(ов)", "Отправлю посылку(и)", "Возьму посылку(и)"];
+  const roles = ["Нужен водитель", "Возьму пассажира(ов)"];
 
   useEffect(() => {
     // Очистка стилей при размонтировании компонента
@@ -151,12 +151,16 @@ const TelegramStyleForm = () => {
   };
 
   return (
-    <div class="container mx-auto p-4">
+    <div class="container mx-auto">
       <div style={{ paddingBottom: `${paddingBottom}px` }}>
-        <div className="p-4 max-w-md mx-auto bg-white rounded-lg">
-          <h1 className="text-xl font-bold mb-4 text-center">
-            🇸🇦 Поездки по Саудии
+      <div className="max-w-md mx-auto bg-white rounded-xl mb-4">
+
+      <h1 className="block bg-gray-100 p-4 text-xl border border-b-1 text-center font-bold mb-1">
+            🇸🇦 Попутка в Саудии
           </h1>
+          </div>
+        
+        <div className="p-4 pt-0 max-w-md mx-auto bg-white rounded-xl">
 
           {/* Чекбоксы для приветствия */}
           <div className="mb-4">
@@ -173,7 +177,7 @@ const TelegramStyleForm = () => {
                 <button
                   key={option.value}
                   onClick={() => setGreeting(option.value)}
-                  className={`px-4 py-2 rounded-lg ${
+                  className={`px-3 py-2 rounded-xl ${
                     greeting === option.value
                       ? "bg-blue-500 text-white"
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -185,10 +189,6 @@ const TelegramStyleForm = () => {
             </div>
           </div>
 
-          <div class="relative flex items-center mb-4">
-            <div class="flex-grow border-t border-gray-300"></div>
-          </div>
-
           {/* Role Selection */}
           <div className="mb-4">
             {/* <label className="block mb-2 font-semibold">Роль</label> */}
@@ -198,7 +198,7 @@ const TelegramStyleForm = () => {
                   key={role}
                   type="button"
                   onClick={() => handleButtonClick("role", role)}
-                  className={`block px-6 py-3 text-xl rounded-xl cursor-pointer w-full text-center ${
+                  className={`block px-3 py-2 text-xl rounded-xl cursor-pointer w-full text-center ${
                     formData.role === role
                       ? "bg-blue-500 text-white"
                       : "bg-gray-200 text-gray-700"
@@ -210,10 +210,6 @@ const TelegramStyleForm = () => {
             </div>
           </div>
 
-          <div class="relative flex items-center mb-6">
-            <div class="flex-grow border-t border-gray-300"></div>
-          </div>
-
           {/* Date */}
           <div className="mb-4">
             <label className="block mb-2 font-semibold">Дата</label>
@@ -223,7 +219,7 @@ const TelegramStyleForm = () => {
               value={formData.date}
               min={new Date().toJSON().slice(0, 10)}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-xl"
             />
           </div>
 
@@ -235,7 +231,7 @@ const TelegramStyleForm = () => {
               name="time"
               value={formData.time}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-xl"
             />
           </div>
 
@@ -248,7 +244,7 @@ const TelegramStyleForm = () => {
                   key={city}
                   type="button"
                   onClick={() => handleButtonClick("from", city)}
-                  className={`px-4 py-2 rounded-lg ${
+                  className={`px-3 py-2 rounded-xl ${
                     formData.from === city
                       ? "bg-blue-500 text-white"
                       : "bg-gray-200 text-gray-700"
@@ -260,7 +256,7 @@ const TelegramStyleForm = () => {
               <button
                 type="button"
                 onClick={() => handleButtonClick("from", "")}
-                className={`px-4 py-2 rounded-lg ${
+                className={`px-3 py-2 rounded-xl ${
                   customCity.from
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200 text-gray-700"
@@ -276,7 +272,7 @@ const TelegramStyleForm = () => {
                 placeholder="Введите город"
                 value={formData.from}
                 onChange={handleInputChange}
-                className="mt-2 w-full p-2 border rounded-lg"
+                className="mt-2 w-full p-2 border rounded-xl"
               />
             )}
           </div>
@@ -290,7 +286,7 @@ const TelegramStyleForm = () => {
                   key={city}
                   type="button"
                   onClick={() => handleButtonClick("to", city)}
-                  className={`px-4 py-2 rounded-lg ${
+                  className={`px-3 py-2 rounded-xl ${
                     formData.to === city
                       ? "bg-blue-500 text-white"
                       : "bg-gray-200 text-gray-700"
@@ -302,7 +298,7 @@ const TelegramStyleForm = () => {
               <button
                 type="button"
                 onClick={() => handleButtonClick("to", "")}
-                className={`px-4 py-2 rounded-lg ${
+                className={`px-3 py-2 rounded-xl ${
                   customCity.to
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200 text-gray-700"
@@ -318,7 +314,7 @@ const TelegramStyleForm = () => {
                 placeholder="Введите город"
                 value={formData.to}
                 onChange={handleInputChange}
-                className="mt-2 w-full p-2 border rounded-lg"
+                className="mt-2 w-full p-2 border rounded-xl"
               />
             )}
           </div>
@@ -336,11 +332,8 @@ const TelegramStyleForm = () => {
               type="number"
               name="seats"
               value={formData.seats}
-              ref={commentRef}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-xl"
             />
           </div>
 
@@ -354,19 +347,23 @@ const TelegramStyleForm = () => {
               ref={commentRef}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              className="block w-full mb-4 p-2 border rounded"
-              placeholder="Добавьте комментарий"
+              className="block w-full mb-4 p-2 border rounded-xl"
+              placeholder={formData.role === "Нужен водитель"
+                ? "Есть багаж"
+                : formData.role === "Возьму пассажира(ов)"
+                ? "Возьму посылку, 10 кг. свободно"
+                : "Вес (кг.)"}
             ></textarea>
           </div>
 
           {/* Submit */}
           <button
             onClick={handleGenerateMessage}
-            className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 relative"
+            className="w-full mt-4 px-3 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 relative"
           >
             Сгенерировать сообщение
             {showTooltip && (
-              <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-700 text-white text-base px-3 py-1 rounded shadow-lg">
+              <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-700 text-white text-base px-3 py-1 rounded-xl shadow-lg">
                 Проверьте сообщение, скопируйте и вставьте в группу телеграмм
               </div>
             )}
@@ -376,7 +373,7 @@ const TelegramStyleForm = () => {
           {generatedMessage && (
             <div className="mt-4" ref={previewRef}>
               <h3 className="font-bold mb-2">Предпросмотр сообщения</h3>
-              <div className="p-3 bg-gray-100 rounded border">
+              <div className="p-3 bg-gray-100 rounded-xl border">
                 <pre className="whitespace-pre-wrap">{generatedMessage}</pre>
               </div>
               <div className="relative mt-4">
@@ -390,7 +387,7 @@ const TelegramStyleForm = () => {
                 )}
                 <button
                   onClick={handleCopyToClipboard}
-                  className={`w-full mt-2 px-4 py-2 text-white rounded ${
+                  className={`w-full mt-2 px-3 py-2 text-white rounded-xl ${
                     highlightCopyButton ? "bg-green-400" : "bg-green-500"
                   } hover:bg-green-600`}
                 >
