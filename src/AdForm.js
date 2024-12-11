@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import Notification from "./Notification";
 
 const TelegramStyleForm = () => {
-
   const [greeting, setGreeting] = useState("");
   const [formData, setFormData] = useState({
     role: "Нужен водитель",
-    date: "",
     time: "",
+    timeOption: "",
+    date: "",
+    dateOption: "",
     from: "",
     to: "",
     seats: "",
@@ -24,6 +25,9 @@ const TelegramStyleForm = () => {
   const previewRef = useRef(null);
   const commentRef = useRef(null);
   const [paddingBottom, setPaddingBottom] = useState(0);
+
+  const [showTimeInput, setShowTimeInput] = useState(false);
+  const [showDateInput, setShowDateInput] = useState(false);
 
   const cities = ["Медина", "Мекка", "Джидда", "Эр-Рияд"];
   const roles = ["Нужен водитель", "Возьму пассажира(ов)"];
@@ -55,49 +59,53 @@ const TelegramStyleForm = () => {
       messageParts.push(greeting);
     }
 
-    
-      // Добавляем поля только если они не пустые
-      if (formData.role) {
-        let icon = (formData.role) === "Нужен водитель"
+    // Добавляем поля только если они не пустые
+    if (formData.role) {
+      let icon =
+        formData.role === "Нужен водитель"
           ? "🚘"
           : formData.role === "Возьму пассажира(ов)"
           ? "🚘"
-          : "🧳"
+          : "🧳";
 
-        messageParts.push(`${icon} ${formData.role}`);
-      }
+      messageParts.push(`${icon} ${formData.role}`);
+    }
 
-      if (formData.date) {
-        messageParts.push(`📅 ${formData.date}`);
-      }
+    if (formData.date) {
+      messageParts.push(`📅 ${formData.date}`);
+    }
 
-      if (formData.time) {
-        messageParts.push(`🕓 ${formData.time}`);
-      }
-    
-    
-      if (formData.from) {
-        messageParts.push(`📌 Откуда: ${formData.from}`);
-      }
-    
-      if (formData.to) {
-        messageParts.push(`📍 Куда: ${formData.to}`);
-      }
-    
-      if (formData.seats) {
-        let text = (formData.role) === "Нужен водитель"
+    if (formData.time) {
+      messageParts.push(`🕓 ${formData.time}`);
+    }
+
+    if (formData.from) {
+      messageParts.push(`📌 Откуда: ${formData.from}`);
+    }
+
+    if (formData.to) {
+      messageParts.push(`📍 Куда: ${formData.to}`);
+    }
+
+    if (formData.seats) {
+      let text =
+        formData.role === "Нужен водитель"
           ? "Количество пассажиров"
           : formData.role === "Возьму пассажира(ов)"
           ? "Количество мест"
-          : "Вес"
+          : "Вес";
 
-        let kg = (formData.role !== "Нужен водитель" && formData.role !== "Возьму пассажира(ов)") ? "кг" : ""
-        messageParts.push(`🔢 ${text}: ${formData.seats} ${kg}`);
-      }
-    
-      if (formData.comment) {
-        messageParts.push(`${formData.comment}`);
-      }
+      let kg =
+        formData.role !== "Нужен водитель" &&
+        formData.role !== "Возьму пассажира(ов)"
+          ? "кг"
+          : "";
+      messageParts.push(`🔢 ${text}: ${formData.seats} ${kg}`);
+    }
+
+    if (formData.comment) {
+      messageParts.push(`${formData.comment}`);
+    }
 
     const formattedMessage = messageParts.join("\n");
     setGeneratedMessage(formattedMessage);
@@ -150,18 +158,46 @@ const TelegramStyleForm = () => {
     setPaddingBottom(0);
   };
 
+  const handleOptionClick = (option, type) => {
+    if (type === "time") {
+      setFormData((prevData) => ({
+        ...prevData,
+        timeOption: option,
+        time: option === "Указать время" ? "" : option, // Сброс времени, если "Указать время"
+      }));
+      setShowTimeInput(option === "Указать время");
+    } else if (type === "date") {
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+      const dayAfterTomorrow = new Date(today);
+      dayAfterTomorrow.setDate(today.getDate() + 2);
+
+      let dateValue = "";
+      if (option === "Сегодня") dateValue = today.toISOString().slice(0, 10);
+      if (option === "Завтра") dateValue = tomorrow.toISOString().slice(0, 10);
+      if (option === "Послезавтра")
+        dateValue = dayAfterTomorrow.toISOString().slice(0, 10);
+
+      setFormData((prevData) => ({
+        ...prevData,
+        dateOption: option,
+        date: option === "Указать дату" ? "" : dateValue,
+      }));
+      setShowDateInput(option === "Указать дату");
+    }
+  };
+
   return (
     <div class="container mx-auto">
       <div style={{ paddingBottom: `${paddingBottom}px` }}>
-      <div className="max-w-md mx-auto bg-white rounded-xl mb-4">
-
-      <h1 className="block bg-gray-100 p-4 text-xl border border-b-1 text-center font-bold mb-1">
+        <div className="max-w-md mx-auto bg-white rounded-xl mb-4">
+          <h1 className="block bg-gray-100 p-4 text-xl border border-b-1 text-center font-bold mb-1">
             🇸🇦 Попутка в Саудии
           </h1>
-          </div>
-        
-        <div className="p-4 pt-0 max-w-md mx-auto bg-white rounded-xl">
+        </div>
 
+        <div className="p-4 pt-0 max-w-md mx-auto bg-white rounded-xl">
           {/* Чекбоксы для приветствия */}
           <div className="mb-4">
             <label className="block mb-2 font-semibold">Приветствие</label>
@@ -212,27 +248,83 @@ const TelegramStyleForm = () => {
 
           {/* Date */}
           <div className="mb-4">
-            <label className="block mb-2 font-semibold">Дата</label>
-            <input
-              type="date"
-              name="date"
-              value={formData.date}
-              min={new Date().toJSON().slice(0, 10)}
-              onChange={handleInputChange}
-              className="w-full p-2 border rounded-xl"
-            />
-          </div>
+            {/* Выбор даты */}
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold">Дата:</label>
 
-          {/* Time */}
+              {/* Кнопки для выбора даты */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {["Сегодня", "Завтра", "Послезавтра", "Указать дату"].map(
+                  (option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className={`px-3 py-2 rounded-xl ${
+                        formData.dateOption === option
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200 text-gray-700"
+                      }`}
+                      onClick={() => handleOptionClick(option, "date")}
+                    >
+                      {option}
+                    </button>
+                  )
+                )}
+              </div>
+
+              {/* Поле ввода даты */}
+              {showDateInput && (
+                <input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  min={new Date().toJSON().slice(0, 10)}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded-xl"
+                />
+              )}
+            </div>
+          </div>
+          {/* Выбор времени */}
           <div className="mb-4">
             <label className="block mb-2 font-semibold">Время:</label>
-            <input
-              type="time"
-              name="time"
-              value={formData.time}
-              onChange={handleInputChange}
-              className="w-full p-2 border rounded-xl"
-            />
+
+            {/* Кнопки для выбора времени */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {[
+                "Сейчас",
+                "После Фаджра",
+                "После Зухра",
+                "После Асра",
+                "После Магриба",
+                "После Иша",
+                "Указать время",
+              ].map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  className={`px-3 py-2 rounded-xl ${
+                    formData.timeOption === option
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-gray-700"
+                  }`}
+                  onClick={() => handleOptionClick(option, "time")}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+
+            {/* Поле ввода времени */}
+            {showTimeInput && (
+              <input
+                type="time"
+                name="time"
+                value={formData.time}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded-xl"
+              />
+            )}
           </div>
 
           {/* From */}
@@ -322,11 +414,11 @@ const TelegramStyleForm = () => {
           {/* Seats */}
           <div className="mb-4">
             <label className="block mb-2 font-semibold">
-            {formData.role === "Нужен водитель"
-              ? "Количество пассажиров"
-              : formData.role === "Возьму пассажира(ов)"
-              ? "Количество мест"
-              : "Вес (кг.)"}
+              {formData.role === "Нужен водитель"
+                ? "Количество пассажиров"
+                : formData.role === "Возьму пассажира(ов)"
+                ? "Количество мест"
+                : "Вес (кг.)"}
             </label>
             <input
               type="number"
@@ -348,11 +440,13 @@ const TelegramStyleForm = () => {
               onFocus={handleFocus}
               onBlur={handleBlur}
               className="block w-full mb-4 p-2 border rounded-xl"
-              placeholder={formData.role === "Нужен водитель"
-                ? "Есть багаж"
-                : formData.role === "Возьму пассажира(ов)"
-                ? "Возьму посылку, 10 кг. свободно"
-                : "Вес (кг.)"}
+              placeholder={
+                formData.role === "Нужен водитель"
+                  ? "Есть багаж"
+                  : formData.role === "Возьму пассажира(ов)"
+                  ? "Возьму посылку, 10 кг. свободно"
+                  : "Вес (кг.)"
+              }
             ></textarea>
           </div>
 
